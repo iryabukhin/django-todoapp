@@ -1,0 +1,5 @@
+{
+	"djangointellisense.debugMessages": false,
+	"djangointellisense.projectRoot": "${workspaceFolder}/src",
+	"djangointellisense.settingsModule": "todoapp.settings"
+}
