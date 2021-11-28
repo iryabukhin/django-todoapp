@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content%}
+    <h3>Login</h3>
+    {% include 'messages.html' %}
+
+    <div class="todo-form">
+        <form method="post" action="{% url 'authenticate' %}">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" required id="username" name="username" class="form-control" placeholder="Username" />
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" required id="password" name="password" class="form-control" placeholder="Password" />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </div>
+{% endblock %}

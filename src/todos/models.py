@@ -1,18 +1,30 @@
 from django.db import models
+from django.utils import timezone
+from django.contrib.auth.models import User
 from datetime import datetime
 
 
-class Task(models.Model):
+class HashTag(models.Model):
+    title = models.CharField(max_length=50)
+    created_at = models.DateTimeField(default=timezone.now)
 
+
+class Todo(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     title = models.CharField(max_length=255)
-    description = models.CharField(max_length=255)
+    description = models.TextField(null=True)
     due_date = models.DateTimeField(blank=True, null=True)
     completed = models.BooleanField(default=False)
     completed_date = models.BooleanField(default=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    prioriy = models.PositiveSmallIntegerField(blank=True, null=True)
+    priority = models.PositiveSmallIntegerField(blank=True, null=True)
+
+    hashtags = models.ManyToManyField(HashTag)
+
+    class Meta:
+        ordering = ["-priority", "-created_at"]
 
     def is_overdue(self) -> bool:
         if not self.due_date:
@@ -24,7 +36,3 @@ class Task(models.Model):
         if self.completed:
             self.completed_date = datetime.now()
         super(Task, self).save()
-
-    class Meta:
-        ordering = ['-priority', '-created_at']
-
