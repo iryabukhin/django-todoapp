@@ -1,26 +1,25 @@
 version: "3.9"
 services:
   db:
-    image: mysql:8.0
+    image: postgres
     restart: always
     env_file:
       - ./.env
     environment:
-      MYSQL_DATABASE: todoapp
-      MYSQL_ROOT_PASSWORD: toor
-      MYSQL_USER: django
-      MYSQL_PASSWORD: secret
+      POSTGRES_DB: todoapp
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - db-data:/var/lib/mysql
+      - ./data/db:/var/lib/postgresql/data
   redis:
     image: redis:alpine
     restart: always
   web:
     build: .
     command: >
-      /bin/sh -c "python3 manage.py migrate
+      /bin/bash -c "python3 manage.py migrate
                   && python3 manage.py runserver 0.0.0.0:8000"
     env_file:
       - ./.env
