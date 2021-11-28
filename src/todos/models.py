@@ -16,7 +16,7 @@ class Todo(models.Model):
     description = models.TextField(null=True)
     due_date = models.DateTimeField(blank=True, null=True)
     completed = models.BooleanField(default=False)
-    completed_date = models.BooleanField(default=False)
+    completed_date = models.DateTimeField(null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     priority = models.PositiveSmallIntegerField(blank=True, null=True)
@@ -35,4 +35,4 @@ class Todo(models.Model):
     def save(self, **kwargs):
         if self.completed:
             self.completed_date = datetime.now()
-        super(Task, self).save()
+        super(Todo, self).save()
