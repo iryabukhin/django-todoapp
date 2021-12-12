@@ -5,81 +5,68 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 
-def login(request):
-    print("The login page")
+def redirect_back(request):
+    return redirect(request.META.get("HTTP_REFERER"))
 
+
+def login(request):
     return render(request, "login.html")
+
+
+def login_submit(request):
+    username = request.POST.get("username")
+    password = request.POST.get("password")
+
+    user = auth.authenticate(request, username=username, password=password)
+
+    if not user:
+        messages.error(request, "Login failed. Please try again.")
+        return redirect_back(request)
+
+    auth.login(request, user)
+    messages.success(request, "You are now logged in as {}.".format(username))
+
+    return redirect("index")
 
 
 @login_required
 def logout(request):
-    print("Logging Out")
     auth.logout(request)
     messages.info(request, "You have been logged out.")
     return redirect("index")
 
 
-def authenticate(request):
-    print("The authenticate request")
-    # Get the form data from the request.
-    username = request.POST.get("username")
-    password = request.POST.get("password")
+def signup_submit(req):
+    email = req.POST.get("email")
+    username = req.POST.get("username")
+    password1 = req.POST.get("password1")
+    password2 = req.POST.get("password2")
 
-    print("Authenticating the user")
-    user = auth.authenticate(request, username=username, password=password)
-
-    # If authentication failed redirect back to the form
-    # with messages.
-    if not user:
-        print("Login error")
-        messages.error(request, "Login failed. Please try again.")
-        return redirect_back(request)
-
-    # If authentication was successful
-    auth.login(request, user)
-    print("Login successful")
-
-    # Add save success message
-    messages.info(request, "You are now logged in as {}.".format(username))
-    return redirect("index")
-
-
-def signup(request):
-    return render(request, "signup.html")
-
-
-def signup_submit(request):
-    # Get the form data from the request.
-    email = request.POST.get("email")
-    username = request.POST.get("username")
-    password = request.POST.get("password")
-    first_name = request.POST.get("first_name")
-    last_name = request.POST.get("last_name")
-
-    # Validate username is not already taken.
     if User.objects.filter(username=username).exists():
-        messages.error(request, "Username {} is already taken.".format(username))
-        return redirect_back(request)
+        messages.error(req, "Username '{}' is already taken.".format(username))
+        return redirect_back(req)
 
-    # Validate email is not already taken.
     if User.objects.filter(email=email).exists():
-        messages.error(request, "Email {} is already taken.".format(email))
-        return redirect_back(request)
+        messages.error(req, "Email {} is already taken.".format(email))
+        return redirect_back(req)
+
+    if password1 != password2:
+        messages.error(req, "Password confirmation is incorrect!")
+        return redirect_back(req)
 
     try:
         user = User.objects.create_user(
-            username=username, email=email, password=password, first_name=first_name, last_name=last_name
+            username=username,
+            email=email,
+            password=password1
         )
-    except:
+    except Exception as e:
         user = None
 
     if not user:
-        messages.error(request, "Error creating a new user.")
-        return redirect_back(request)
+        messages.error(req, "Error creating a new user.")
+        return redirect_back(req)
 
-    messages.info(request, "User has been created, you can login now.")
-    return redirect("login")
-
-
-def redirect_back(request):
-    return redirect(request.META.get("HTTP_REFERER"))
+    messages.success(req, "Created user")
+    auth.login(req, user)
+    return redirect("index")

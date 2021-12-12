@@ -1,7 +1,6 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Todo, HashTag
+from .models import Todo
 
 admin.site.register(Todo)
-admin.site.register(HashTag)

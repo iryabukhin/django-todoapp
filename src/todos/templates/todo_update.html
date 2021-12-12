@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% include 'messages.html' %}
+
+{% block content %}
+    {% load crispy_forms_tags %}
+
+    <div class="row d-flex justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12 align-self-center">
+            <form action="{% url 'todo-update' object.id %}" method="post">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-block btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

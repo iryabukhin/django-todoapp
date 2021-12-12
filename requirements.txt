@@ -2,7 +2,9 @@ Django>=3.0,<4.0
 python-dotenv==0.19.2
 djangorestframework==3.12.4
 django-environ==0.8.1
+django-crispy-forms
 redis==3.4.1
 psycopg2-binary>=2.0
 gunicorn
 whitenoise
+django-jsonview

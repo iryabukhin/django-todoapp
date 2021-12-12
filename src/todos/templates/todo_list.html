@@ -1,0 +1,58 @@
+<div class="row justify-content-center align-self-center">
+    <div class="col col-lg-12 col-xl-10 col-sm-12 col-md-12">
+        <div class="card">
+            <article class="card-body p-4">
+
+                <h4 class="card-title text-center mb-3 mt-1">To Do App</h4>
+
+                <form>
+                    <div class="row row-cols-lg-auto g-3 justify-content-center align-items-center mb-4 pb-2">
+                        <div class="col">
+                            <a href="{% url 'todo-create' %}" class="btn btn-block btn-primary">Create a new task</a>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="todo_list" class="table mb-4">
+
+                            <thead class="thead-light">
+                            <tr>
+                                <th scope="col">No.</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Status</th>
+                                <th scope="col" class="text-center">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for  item in items %}
+                                <tr
+                                    class="todo-item {% if item.is_overdue %}alert-danger{% elif item.completed %}alert-success{% endif %}"
+                                    data-id="{{ item.id }}"
+                                >
+                                    <th scope="row">{{ forloop.counter }}</th>
+                                    <td>{{ item.title }}</td>
+                                    <td>{{ item.get_status_msg }}</td>
+                                    <td class="text-center">
+                                        <span>
+                                            <button class="mr-1 btn btn-sm btn-light todo-item-action"
+                                                    data-action="complete">
+                                                {% if not item.completed %}
+                                                    <i class="fa fa-check"></i>
+                                                {% else %}
+                                                    <i class="fa fa-repeat"></i>
+                                                {% endif %}
+                                            </button>
+                                            <button class="btn btn-sm btn-danger todo-item-action" data-action="delete">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </article>
+        </div>
+    </div>
+</div>

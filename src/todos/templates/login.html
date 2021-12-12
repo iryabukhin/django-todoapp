@@ -1,24 +1,141 @@
 {% extends 'base.html' %}
-{% block content%}
-    <h3>Login</h3>
+{% block content %}
     {% include 'messages.html' %}
+    <div class="row d-flex justify-content-center align-items-center mt-4">
+        <div class="col-sm-12 col-lg-6 col-md-10 align-items-center">
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-pills nav-justified" role="tablist" id="login-tablist">
+                        <li class="nav-item">
+                            <a href="#logintab" class="nav-link active" role="tab" data-toggle="tab"
+                               aria-controls="signuptab">
+                                <h4 class="text-capitalize font-weight-bold">Log In</h4>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#signuptab" class="nav-link" role="tab" data-toggle="tab"
+                               aria-controls="signuptab">
+                                <h4 class="text-capitalize font-weight-bold">Sign Up</h4>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content mt-3">
+                        <div class="tab-pane fade active show" role="tabpanel" id="logintab" aria-labelledby="login-tab">
+                            <form method="post" action="{% url 'login-submit' %}">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                        </div>
+                                        <div class="form-control">
+                                            <input
+                                                    type="text"
+                                                    required
+                                                    name="username"
+                                                    class="form-control"
+                                                    placeholder="Username"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                                        </div>
+                                        <div class="form-control">
+                                            <input
+                                                    type="password"
+                                                    required
+                                                    name="password"
+                                                    class="form-control"
+                                                    placeholder="Password"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-block btn-primary">Login</button>
+                                <p class="text-center"><a href="/forgotpassword" class="btn">Forgot password?</a></p>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" role="tabpanel" id="signuptab" aria-labelledby="signup-tab">
+                            <p class="text-center font-weight-bold">Create an account</p>
+                            <form method="post" action="{% url 'signup-submit' %}">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                                        </div>
+                                        <div class="form-control">
+                                            <input
+                                                    type="text"
+                                                    required
+                                                    name="email"
+                                                    class="form-control"
+                                                    placeholder="Email"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                        </div>
+                                        <div class="form-control">
+                                            <input
+                                                    type="text"
+                                                    required
+                                                    name="username"
+                                                    class="form-control"
+                                                    placeholder="Username"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
 
-    <div class="todo-form">
-        <form method="post" action="{% url 'authenticate' %}">
-
-            {% csrf_token %}
-
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" required id="username" name="username" class="form-control" placeholder="Username" />
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                                        </div>
+                                        <div class="form-control">
+                                            <input
+                                                    type="password"
+                                                    required
+                                                    name="password1"
+                                                    class="form-control"
+                                                    placeholder="Password"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                                        </div>
+                                        <div class="form-control">
+                                            <input
+                                                    type="password"
+                                                    required
+                                                    name="password2"
+                                                    class="form-control"
+                                                    placeholder="Repeat Password"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-block btn-success">Sign Up</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" required id="password" name="password" class="form-control" placeholder="Password" />
-            </div>
-
-            <button type="submit" class="btn btn-primary">Login</button>
-        </form>
+        </div>
     </div>
 {% endblock %}
