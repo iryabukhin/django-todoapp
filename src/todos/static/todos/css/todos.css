@@ -2,3 +2,10 @@ body, html {
   min-height: 100%;
 }
 
+tr .todo-item {
+  transition: background-color 700ms;
+}
+
+td .todo-item__status {
+  font-weight: bold;
+}

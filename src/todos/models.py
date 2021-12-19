@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from datetime import datetime
 
+
 class Todo(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -17,7 +18,7 @@ class Todo(models.Model):
     priority = models.PositiveSmallIntegerField(blank=True, null=True)
 
     class Meta:
-        ordering = ["-priority", "-created_at"]
+        ordering = ["-priority"]
 
     def is_overdue(self) -> bool:
         if not self.due_date:

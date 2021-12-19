@@ -23,7 +23,7 @@
                 <div class="card-body">
                     <div class="tab-content mt-3">
                         <div class="tab-pane fade active show" role="tabpanel" id="logintab" aria-labelledby="login-tab">
-                            <form method="post" action="{% url 'login-submit' %}">
+                            <form method="post" action="{% url 'login' %}">
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <div class="input-group">
@@ -63,7 +63,7 @@
                         </div>
                         <div class="tab-pane fade" role="tabpanel" id="signuptab" aria-labelledby="signup-tab">
                             <p class="text-center font-weight-bold">Create an account</p>
-                            <form method="post" action="{% url 'signup-submit' %}">
+                            <form method="post" action="{% url 'signup' %}">
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <div class="input-group">

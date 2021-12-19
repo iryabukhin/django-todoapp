@@ -2,7 +2,7 @@ from django.urls import path, re_path
 from . import views, views_api, auth_views
 
 urlpatterns = [
-    re_path(r"^$", views.index, name="index"),
+    re_path(r"^$", views.TodoListView.as_view(), name="index"),
 
     path("todo/create/", views.TodoCreateView.as_view(), name="todo-create"),
     path("todo/<int:pk>/update", views.TodoUpdateView.as_view(), name="todo-update"),
@@ -12,8 +12,7 @@ urlpatterns = [
     path("api/todos/<int:pk>", views_api.TodoItemView.as_view(), name="api_todo_item"),
     path("api/todos", views_api.TodoListView.as_view(), name="api_todo_list"),
 
-    path("login", auth_views.login, name="login"),
-    path("login/submit", auth_views.login_submit, name="login-submit"),
-    path("signup/submit", auth_views.signup_submit, name="signup-submit"),
-    path("logout", auth_views.logout, name="logout"),
+    path("auth/login", auth_views.LoginView.as_view(), name="login"),
+    path("auth/signup", auth_views.signup_submit, name="signup"),
+    path("logout", auth_views.LogoutView.as_view(), name="logout"),
 ]

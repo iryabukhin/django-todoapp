@@ -2,6 +2,8 @@ from django.contrib import auth
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import View
 from django.shortcuts import render, redirect
 
 
@@ -9,31 +11,34 @@ def redirect_back(request):
     return redirect(request.META.get("HTTP_REFERER"))
 
 
-def login(request):
-    return render(request, "login.html")
+class LoginView(View):
+    def get(self, request):
+        return render(request, "login.html")
+
+    def post(self, request):
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = auth.authenticate(request, username=username, password=password)
+
+        if not user:
+            messages.error(request, "Login failed. Please try again.")
+            return redirect_back(request)
+
+        auth.login(request, user)
+        messages.success(request, "You are now logged in as {}.".format(username))
+
+        return redirect("index")
 
 
-def login_submit(request):
-    username = request.POST.get("username")
-    password = request.POST.get("password")
+class LogoutView(View, LoginRequiredMixin):
 
-    user = auth.authenticate(request, username=username, password=password)
+    login_url = "/login"
+    redirect_field_name = "redirect_to"
 
-    if not user:
-        messages.error(request, "Login failed. Please try again.")
-        return redirect_back(request)
-
-    auth.login(request, user)
-    messages.success(request, "You are now logged in as {}.".format(username))
-
-    return redirect("index")
-
-
-@login_required
-def logout(request):
-    auth.logout(request)
-    messages.info(request, "You have been logged out.")
-    return redirect("index")
+    def get(self, request):
+        auth.logout(request)
+        return redirect("login")
 
 
 def signup_submit(req):

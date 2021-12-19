@@ -45,25 +45,26 @@ $(document).ready(function () {
     });
 
     function handleAction(action, taskId, element) {
+        var tr = $(element).closest('tr');
+
         if (action === 'complete') {
-            $.ajax('/todo/' + taskId + '/complete', {
-                method: 'PUT'
-            }).done(function (response) {
-                $(element).closest('tr')
-                    .removeClass('alert-danger')
-                    .addClass('alert-success');
-            }).fail(function (response) {
+            $.ajax('/todo/' + taskId + '/complete', {method: 'PUT'})
+                .done(function (response) {
+                    console.log(response);
+
+                    tr.removeClass('alert-danger').addClass('alert-success');
+                    tr.find('.todo-item__status').text('Completed');
+                    tr.find('i.fa').removeClass('fa-check').addClass('fa-repeat');
+                }).fail(function (response) {
                 alert('Failed updating task!');
             });
         } else if (action === 'delete') {
             $.ajax('/todo/' + taskId + '/delete', {
                 method: 'DELETE'
-            }).done(function () {
-                $(element).closest('tr')
-                    .css('transition', 'background-color 0.3s')
-                    .removeClass('alert-success')
-                    .addClass('alert-danger')
-                    .fadeOut(700);
+            }).done(function (response) {
+                console.log(response);
+                tr.removeClass('alert-success').addClass('alert-danger');
+                tr.fadeOut(1000);
             }).fail(function (response) {
                 alert('Could not delete task!');
             });
